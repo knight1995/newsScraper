@@ -19,7 +19,7 @@ To install scrapy after installing Python, use -
 pip install scrapy
 ```
 
-Once scraping is done, the scraped data is stored in a json file. This scraped data is sent to Solr using Pysolr
+Once scraping is done, the scraped data is stored in a json file. This scraped data is sent to Solr using Pysolr.
 To isntall Pysolr, use -
 ```
 pip install pysolr
@@ -41,7 +41,10 @@ create a Solr Core, named articles using -
 ```
 
 ### API
-The Spring Boot Appplication is named NewsScraperSearch, to run this application Java (https://www.oracle.com/technetwork/java/javase/downloads/index.html) and Maven (https://maven.apache.org/download.cgi) is needed, which can be installed with the mentioned links.
+The Spring Boot Appplication is named NewsScraperSearch, to run this application,
+Java (https://www.oracle.com/technetwork/java/javase/downloads/index.html) and 
+Maven (https://maven.apache.org/download.cgi) 
+is needed, which can be installed by following the mentioned links.
 
 ## Running the tests
 To start the scraper, open a terminal/cmd in the newsScraper folder(which contains scrapy.cfg file) and run -
@@ -62,11 +65,11 @@ The scraper create a items.json file at the same location. The json file contain
 To send the scraped data to Solr server, run the following in the same terminal/cmd -
 
 ```
-python inject.py items.json http://<Solr Server IP>:8983/solr/articles
+python inject.py items.json http://{Solr Server IP}:8983/solr/articles
 ```
-Replace <Solr server ip> in the above commadn with the ip address of Solr server
+Replace {Solr server ip} in the above command with the ip address of the Solr server
 
-If the Solr server and Application Server are on different machines, then the following property needs to be changed in the application.properties file, located in  NewsScraperSearch/src/main/resources/application.properties - 
+If the Solr server and the Application Server are on different machines, then the following property needs to be changed in the application.properties file, located in  NewsScraperSearch/src/main/resources/application.properties - 
 
 ```
 solr.server.articles.url
