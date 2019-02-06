@@ -35,8 +35,6 @@ public class NewsScraperServiceImpl implements NewsScraperService {
 	QueryBuilder queryBuilder;
 
 	private static final Logger logger = LoggerFactory.getLogger(NewsScraperService.class);
-	private static final String PATTERN_STRING = "[^a-zA-Z\\d\\s:]";
-	private static final String QUERY_FAILURE = "Error while querying for the results";
 
 	@Override
 	public ResponseEntity searchArticle(String author, String title, String description, Long pageNumber) {
@@ -60,14 +58,14 @@ public class NewsScraperServiceImpl implements NewsScraperService {
 			query = queryBuilder.buildArticleQuery(
 					String.format(SearchConstants.DESCRIPTION_QUERY_STRING, description, description), pageNumber);
 		} else {
-			throw new IllegalArgumentException(QUERY_FAILURE);
+			throw new IllegalArgumentException(SearchConstants.INVALID_INPUT);
 		}
 		try {
 			QueryResponse response = solrClient.query(query);
 			articles = response.getBeans(Article.class);
 		} catch (SolrServerException | IOException e) {
 			logger.error(e.getMessage());
-			throw new IllegalArgumentException(QUERY_FAILURE);
+			throw new IllegalArgumentException(SearchConstants.QUERY_FAILURE);
 		}
 		responseData.put("articles", articles);
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
@@ -87,7 +85,7 @@ public class NewsScraperServiceImpl implements NewsScraperService {
 			query = queryBuilder.buildArticleQuery(String.format(SearchConstants.AUTHOR_QUERY_STRING, author, author),
 					pageNumber);
 		} else {
-			throw new IllegalArgumentException(QUERY_FAILURE);
+			throw new IllegalArgumentException(SearchConstants.INVALID_INPUT);
 		}
 		try {
 			QueryResponse response = solrClient.query(query);
@@ -101,14 +99,14 @@ public class NewsScraperServiceImpl implements NewsScraperService {
 			}
 		} catch (SolrServerException | IOException e) {
 			logger.error(e.getMessage());
-			throw new IllegalArgumentException(QUERY_FAILURE);
+			throw new IllegalArgumentException(SearchConstants.QUERY_FAILURE);
 		}
 		responseData.put("authors", authorsSet);
 		return new ResponseEntity<>(responseData, HttpStatus.OK);
 	}
 
 	private String getSearchString(String input) {
-		String replacedString = input.replaceAll(PATTERN_STRING, "");
+		String replacedString = input.replaceAll(SearchConstants.PATTERN_STRING, "");
 		return (replacedString.isEmpty() ? input : replacedString);
 	}
 

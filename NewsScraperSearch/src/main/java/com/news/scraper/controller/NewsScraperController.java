@@ -28,7 +28,7 @@ public class NewsScraperController {
 	}
 	
 	@GetMapping(value = { "/author/search" })
-	public ResponseEntity<Object> searchAuthor(@RequestParam(value = "author", required = false) String author,
+	public ResponseEntity<Object> searchAuthor(@RequestParam(value = "author", required = true) String author,
 			@RequestParam(value = "pageNumber", required = false) Long pageNumber, HttpServletRequest httpRequest) {
 		return newsScraperService.searchAuthor(author, pageNumber);
 	}
