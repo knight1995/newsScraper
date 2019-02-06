@@ -40,6 +40,12 @@ create a Solr Core, named articles using -
 ./solr create_core -c articles
 ```
 
+Copy and replace the folder conf inside solrCore to the following folder - solr-7.6.0/server/solr/articles/
+
+OR
+
+Replace the managed-schema and solrconfig.xml files inside solr-7.6.0/server/solr/articles/conf/ with the managed-schema and solrconfig.xml files in the solrCore/conf folder of the repository.
+
 ### API
 The Spring Boot Appplication is named NewsScraperSearch, to run this application,
 Java (https://www.oracle.com/technetwork/java/javase/downloads/index.html) and 
