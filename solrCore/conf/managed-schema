@@ -112,7 +112,7 @@
 
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
     <field name="url" type="string" indexed="false" stored="true" required="true" multiValued="false" />
-    <field name="title" type="string_ci" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="title" type="string_ci" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="description" type="string_ci" indexed="true" stored="true" required="false" multiValued="false" />
     <field name="author" type="string_ci" indexed="true" stored="true" required="false" multiValued="false" />
     <!-- docValues are enabled by default for long type so we don't need to index the version field  -->

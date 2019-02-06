@@ -81,6 +81,12 @@ If the Solr server and the Application Server are on different machines, then th
 solr.server.articles.url
 ```
 
+Once data is impoerted successfully in Solr, restart Solr server with the following command -
+
+```
+./solr restart
+```
+
 To start the Application Server, go to the NewsScraperSearch folder, open a terminal/cmd and run the following -
 
 ```
