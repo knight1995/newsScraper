@@ -13,7 +13,7 @@
 	<artifactId>NewsScraper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>NewsScraper</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Spring Boot News Scraper Search Project</description>
 
 	<properties>
 		<java.version>1.8</java.version>
