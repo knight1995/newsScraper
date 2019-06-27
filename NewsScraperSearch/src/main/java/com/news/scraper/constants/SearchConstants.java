@@ -1,7 +1,7 @@
 package com.news.scraper.constants;
 
 public class SearchConstants {
-	
+
 	public static final String PATTERN_STRING = "[^a-zA-Z\\d\\s:]";
 	public static final String QUERY_FAILURE = "Error while querying for the results";
 	public static final String INVALID_INPUT = "Please provide search parameter";

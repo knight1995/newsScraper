@@ -3,13 +3,16 @@ package com.news.scraper.entity;
 import org.apache.solr.client.solrj.beans.Field;
 
 public class Article {
-	
+
 	@Field
 	private String url;
+
 	@Field
 	private String title;
+
 	@Field
 	private String author;
+
 	@Field
 	private String description;
 
