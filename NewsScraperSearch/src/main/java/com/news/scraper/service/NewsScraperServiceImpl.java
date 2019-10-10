@@ -28,86 +28,88 @@ import com.news.scraper.entity.Author;
 @SuppressWarnings("rawtypes")
 public class NewsScraperServiceImpl implements NewsScraperService {
 
-	@Value(value = "${solr.server.articles.url}")
-	private String articlesUrl;
+  @Value(value = "${solr.server.articles.url}")
+  private String articlesUrl;
 
-	@Autowired
-	QueryBuilder queryBuilder;
+  @Autowired
+  QueryBuilder queryBuilder;
 
-	private static final Logger logger = LoggerFactory.getLogger(NewsScraperService.class);
+  private static final Logger logger = LoggerFactory.getLogger(NewsScraperService.class);
 
-	@Override
-	public ResponseEntity searchArticle(String author, String title, String description, Long pageNumber) {
-		Map<String, Object> responseData = new HashMap<>();
-		List<Article> articles = null;
-		if (pageNumber == null || pageNumber < 0l) {
-			pageNumber = 0l;
-		}
-		HttpSolrClient solrClient = new HttpSolrClient.Builder(articlesUrl).build();
-		SolrQuery query = null;
-		if (!StringUtils.isEmpty(author)) {
-			author = getSearchString(author);
-			query = queryBuilder.buildArticleQuery(String.format(SearchConstants.AUTHOR_QUERY_STRING, author, author),
-					pageNumber);
-		} else if (!StringUtils.isEmpty(title)) {
-			title = getSearchString(title);
-			query = queryBuilder.buildArticleQuery(String.format(SearchConstants.TITLE_QUERY_STRING, title, title),
-					pageNumber);
-		} else if (!StringUtils.isEmpty(description)) {
-			description = getSearchString(description);
-			query = queryBuilder.buildArticleQuery(
-					String.format(SearchConstants.DESCRIPTION_QUERY_STRING, description, description), pageNumber);
-		} else {
-			throw new IllegalArgumentException(SearchConstants.INVALID_INPUT);
-		}
-		try {
-			QueryResponse response = solrClient.query(query);
-			articles = response.getBeans(Article.class);
-		} catch (SolrServerException | IOException e) {
-			logger.error(e.getMessage());
-			throw new IllegalArgumentException(SearchConstants.QUERY_FAILURE);
-		}
-		responseData.put("articles", articles);
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
-	}
+  @Override
+  public ResponseEntity searchArticle(String author, String title, String description,
+      Long pageNumber) {
+    Map<String, Object> responseData = new HashMap<>();
+    List<Article> articles = null;
+    if (pageNumber == null || pageNumber < 0l) {
+      pageNumber = 0l;
+    }
+    HttpSolrClient solrClient = new HttpSolrClient.Builder(articlesUrl).build();
+    SolrQuery query = null;
+    if (!StringUtils.isEmpty(author)) {
+      author = getSearchString(author);
+      query = queryBuilder.buildArticleQuery(
+          String.format(SearchConstants.AUTHOR_QUERY_STRING, author, author), pageNumber);
+    } else if (!StringUtils.isEmpty(title)) {
+      title = getSearchString(title);
+      query = queryBuilder.buildArticleQuery(
+          String.format(SearchConstants.TITLE_QUERY_STRING, title, title), pageNumber);
+    } else if (!StringUtils.isEmpty(description)) {
+      description = getSearchString(description);
+      query = queryBuilder.buildArticleQuery(
+          String.format(SearchConstants.DESCRIPTION_QUERY_STRING, description, description),
+          pageNumber);
+    } else {
+      throw new IllegalArgumentException(SearchConstants.INVALID_INPUT);
+    }
+    try {
+      QueryResponse response = solrClient.query(query);
+      articles = response.getBeans(Article.class);
+    } catch (SolrServerException | IOException e) {
+      logger.error(e.getMessage());
+      throw new IllegalArgumentException(SearchConstants.QUERY_FAILURE);
+    }
+    responseData.put("articles", articles);
+    return new ResponseEntity<>(responseData, HttpStatus.OK);
+  }
 
-	@Override
-	public ResponseEntity searchAuthor(String author, Long pageNumber) {
-		Map<String, Object> responseData = new HashMap<>();
-		Set<Author> authorsSet = new HashSet<>();
-		if (pageNumber == null || pageNumber < 0l) {
-			pageNumber = 0l;
-		}
-		HttpSolrClient solrClient = new HttpSolrClient.Builder(articlesUrl).build();
-		SolrQuery query = null;
-		if (!StringUtils.isEmpty(author)) {
-			author = getSearchString(author);
-			query = queryBuilder.buildArticleQuery(String.format(SearchConstants.AUTHOR_QUERY_STRING, author, author),
-					pageNumber);
-		} else {
-			throw new IllegalArgumentException(SearchConstants.INVALID_INPUT);
-		}
-		try {
-			QueryResponse response = solrClient.query(query);
-			List<Author> authors = response.getBeans(Author.class);
-			Map<String, Integer> authorMap = new HashMap<>();
-			for (Author authorObject : authors) {
-				if (!authorMap.containsKey(authorObject.getAuthor())) {
-					authorMap.put(authorObject.getAuthor(), 1);
-					authorsSet.add(authorObject);
-				}
-			}
-		} catch (SolrServerException | IOException e) {
-			logger.error(e.getMessage());
-			throw new IllegalArgumentException(SearchConstants.QUERY_FAILURE);
-		}
-		responseData.put("authors", authorsSet);
-		return new ResponseEntity<>(responseData, HttpStatus.OK);
-	}
+  @Override
+  public ResponseEntity searchAuthor(String author, Long pageNumber) {
+    Map<String, Object> responseData = new HashMap<>();
+    Set<Author> authorsSet = new HashSet<>();
+    if (pageNumber == null || pageNumber < 0l) {
+      pageNumber = 0l;
+    }
+    HttpSolrClient solrClient = new HttpSolrClient.Builder(articlesUrl).build();
+    SolrQuery query = null;
+    if (!StringUtils.isEmpty(author)) {
+      author = getSearchString(author);
+      query = queryBuilder.buildArticleQuery(
+          String.format(SearchConstants.AUTHOR_QUERY_STRING, author, author), pageNumber);
+    } else {
+      throw new IllegalArgumentException(SearchConstants.INVALID_INPUT);
+    }
+    try {
+      QueryResponse response = solrClient.query(query);
+      List<Author> authors = response.getBeans(Author.class);
+      Map<String, Integer> authorMap = new HashMap<>();
+      for (Author authorObject : authors) {
+        if (!authorMap.containsKey(authorObject.getAuthor())) {
+          authorMap.put(authorObject.getAuthor(), 1);
+          authorsSet.add(authorObject);
+        }
+      }
+    } catch (SolrServerException | IOException e) {
+      logger.error(e.getMessage());
+      throw new IllegalArgumentException(SearchConstants.QUERY_FAILURE);
+    }
+    responseData.put("authors", authorsSet);
+    return new ResponseEntity<>(responseData, HttpStatus.OK);
+  }
 
-	private String getSearchString(String input) {
-		String replacedString = input.replaceAll(SearchConstants.PATTERN_STRING, "");
-		return (replacedString.isEmpty() ? input : replacedString);
-	}
+  private String getSearchString(String input) {
+    String replacedString = input.replaceAll(SearchConstants.PATTERN_STRING, "");
+    return (replacedString.isEmpty() ? input : replacedString);
+  }
 
 }

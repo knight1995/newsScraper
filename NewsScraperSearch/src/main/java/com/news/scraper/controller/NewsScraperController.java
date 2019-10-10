@@ -16,21 +16,25 @@ import com.news.scraper.service.NewsScraperService;
 @RequestMapping(value = "/")
 public class NewsScraperController {
 
-	@Autowired
-	NewsScraperService newsScraperService;
+  @Autowired
+  NewsScraperService newsScraperService;
 
-	@GetMapping(value = { "/article/search" })
-	public ResponseEntity<Object> searchArticle(@RequestParam(value = "author", required = false) String author,
-			@RequestParam(value = "title", required = false) String title,
-			@RequestParam(value = "description", required = false) String description,
-			@RequestParam(value = "pageNumber", required = false) Long pageNumber, HttpServletRequest httpRequest) {
-		return newsScraperService.searchArticle(author, title, description, pageNumber);
-	}
+  @GetMapping(value = {"/article/search"})
+  public ResponseEntity<Object> searchArticle(
+      @RequestParam(value = "author", required = false) String author,
+      @RequestParam(value = "title", required = false) String title,
+      @RequestParam(value = "description", required = false) String description,
+      @RequestParam(value = "pageNumber", required = false) Long pageNumber,
+      HttpServletRequest httpRequest) {
+    return newsScraperService.searchArticle(author, title, description, pageNumber);
+  }
 
-	@GetMapping(value = { "/author/search" })
-	public ResponseEntity<Object> searchAuthor(@RequestParam(value = "author", required = true) String author,
-			@RequestParam(value = "pageNumber", required = false) Long pageNumber, HttpServletRequest httpRequest) {
-		return newsScraperService.searchAuthor(author, pageNumber);
-	}
+  @GetMapping(value = {"/author/search"})
+  public ResponseEntity<Object> searchAuthor(
+      @RequestParam(value = "author", required = true) String author,
+      @RequestParam(value = "pageNumber", required = false) Long pageNumber,
+      HttpServletRequest httpRequest) {
+    return newsScraperService.searchAuthor(author, pageNumber);
+  }
 
 }
